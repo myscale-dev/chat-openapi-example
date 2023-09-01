@@ -10,10 +10,14 @@ if (!process.env.KEY) {
   return;
 }
 
+const { v4 } = require("uuid");
 const axios = require("axios");
 const instance = axios.create({
   baseURL: `${process.env.BASE}/api/v1`,
-  headers: { "X-API-TOKEN": process.env.KEY },
+  headers: {
+    "Content-Type": "application/json",
+    "X-API-TOKEN": process.env.KEY,
+  },
 });
 
 run();
@@ -43,6 +47,15 @@ async function run() {
   });
   console.log("collection updated!");
 
+  // Chat with Collection
+  console.log("=== Chat with Collection ===");
+  const response = await instance.post("/chat", {
+    chatbotId: "7f6276be-d739-46fb-8bab-aaab430eb8aa",
+    conversationId: v4(),
+    message: "Hello",
+  });
+  console.log(response.data);
+
   // Add Sources to Collection
   console.log("=== Add Sources to Collection === ");
   const collectionC = await instance.post(
@@ -69,7 +82,7 @@ async function run() {
   );
   console.log(collectionC.data);
 
-  const sourceId = collectionC.data[0].id;
+  const sourceId = collectionC.data[collectionC.data.length - 1].id;
 
   // Delete Sources from Collection
   console.log("=== Delete Sources from Collection === ");
@@ -114,7 +127,7 @@ async function run() {
   const tokens = await instance.get("/users/api-token");
   console.log(tokens.data);
 
-  const tokenId = tokens.data[0].id;
+  const tokenId = tokens.data[tokens.data.length - 1].id;
 
   // Delete API Token
   console.log("===  Delete API Token === ");
