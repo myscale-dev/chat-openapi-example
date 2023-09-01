@@ -92,7 +92,7 @@ async function run() {
   let response;
   try {
     response = await instance.post('/chat', {
-      chatbotId: '7f6276be-d739-46fb-8bab-aaab430eb8aa',
+      chatbotId: collectionId,
       conversationId: v4(),
       message: 'Hello'
     });
@@ -190,5 +190,5 @@ async function run() {
     console.error(error);
     return;
   }
-  console.log(urls);
+  console.log(urls.data);
 }
