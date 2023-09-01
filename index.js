@@ -191,38 +191,4 @@ async function run() {
     return;
   }
   console.log(urls);
-
-  // Generate API Token
-  console.log('=== Generate API Token ===');
-  let token;
-  try {
-    token = await instance.post('/users/api-token', { name: 'example' });
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-  console.log(token.data);
-
-  // Get API Token List
-  console.log('=== Get API Token List ===');
-  let tokens;
-  try {
-    tokens = await instance.get('/users/api-token');
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-  console.log(tokens.data);
-
-  const tokenId = tokens.data[tokens.data.length - 1].id;
-
-  // Delete API Token
-  console.log('===  Delete API Token === ');
-  try {
-    await instance.delete(`/users/api-token/${tokenId}`);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-  console.log('api token deleted!');
 }
