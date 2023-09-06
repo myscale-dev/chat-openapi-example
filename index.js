@@ -79,7 +79,7 @@ async function run() {
   console.log('=== Update Collection Settings === ');
   try {
     await instance.put(`/collections/${collectionId}`, {
-      knowledge_source: 'GENERALIZED'
+      language: 'CHINESE'
     });
   } catch (error) {
     console.error(error);
@@ -87,14 +87,26 @@ async function run() {
   }
   console.log('collection updated!');
 
+  // Get Updated Collection Info
+  console.log('=== Get Updated Collection Info === ');
+  try {
+    collectionB = await instance.get(`/collections/${collectionId}`);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  console.log(collectionB.data);
+
   // Chat with Collection
   console.log('=== Chat with Collection ===');
+  let message = 'Hello';
+  console.log(`message: ${message}`);
   let response;
   try {
     response = await instance.post('/chat', {
       chatbotId: collectionId,
       conversationId: v4(),
-      message: 'Hello'
+      message: message
     });
   } catch (error) {
     console.error(error);
@@ -117,8 +129,10 @@ async function run() {
           },
           {
             type: 'QA_PAIR',
-            question: 'question 2',
-            answer: 'answer 2'
+            question: 'What is MyScale Chat',
+            answer:
+              'MyScale Chat is a chatbot that can answer questions about documents ' +
+              'or websites and provide information about data.'
           }
         ]
       },
@@ -133,6 +147,22 @@ async function run() {
     return;
   }
   console.log(collectionC.data);
+
+  // Chat with Collection
+  console.log('=== Chat with Collection for QA ===');
+  message = 'what is myscale chat?';
+  console.log(`message: ${message}`);
+  try {
+    response = await instance.post('/chat', {
+      chatbotId: collectionId,
+      conversationId: v4(),
+      message: message
+    });
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  console.log(response.data);
 
   const sourceId = collectionC.data[collectionC.data.length - 1].id;
 
@@ -160,6 +190,22 @@ async function run() {
     return;
   }
   console.log(sources.data);
+
+  // Chat with Collection
+  console.log('=== Chat with Collection Again ===');
+  message = 'what is myscale chat?';
+  console.log(`message: ${message}`);
+  try {
+    response = await instance.post('/chat', {
+      chatbotId: collectionId,
+      conversationId: v4(),
+      message: message
+    });
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  console.log(response.data);
 
   // Delete Collection
   console.log('=== Delete Collection === ');
