@@ -11,7 +11,7 @@ const instance = axios.create({
   baseURL: `${process.env.BASE}/api/v1`,
   headers: {
     'Content-Type': 'application/json',
-    'X-API-TOKEN': process.env.KEY
+    'X-API-KEY': process.env.KEY
   }
 });
 instance.interceptors.response.use(null, error => {
@@ -99,14 +99,49 @@ async function run() {
 
   // Chat with Collection
   console.log('=== Chat with Collection ===');
-  let message = 'Hello';
+  let message = '王二狗是什么品种的狗';
+  let extraInfo = `
+  {
+    "worker_name": "张三",
+    "pet_gender": 1,
+    "create_time": 2023-09-01 14:24:29",
+    "pet_name": "比熊犬（体长＜35cm） ",
+    "service_name": "健康洗·护理套餐",
+    "age_year": 2,
+    "age_month": 24,
+    "content": "很活泼，整体还算配合",
+    "nick_name": "王二狗",
+    "age": "2岁",
+    "before_pics": "",
+    "baby_situation": "很乖，毛发打结，建议平时经常梳理毛发。期待跟二狗的下次见面",
+  }
+  [
+    {
+      "position": "头部",
+      "check_item_name": "耳部",
+      "check_name": "未发现异常",
+    },
+    {
+      "position": "头部",
+      "check_item_name ": "口腔",
+      "check_name": "未发现异常",
+    },
+    {
+      "position":  "身体",
+      "check_item_name": "毛发",
+      "check_name": "毛发打结",
+    }
+  ]
+  `;
   console.log(`message: ${message}`);
+  console.log(`extra_info: ${extraInfo}`);
   let response;
   try {
     response = await instance.post('/chat', {
-      chatbotId: collectionId,
-      conversationId: v4(),
-      message: message
+      collection_id: collectionId,
+      conversation_id: v4(),
+      message,
+      extra_info: extraInfo
     });
   } catch (error) {
     console.error(error);
@@ -154,8 +189,8 @@ async function run() {
   console.log(`message: ${message}`);
   try {
     response = await instance.post('/chat', {
-      chatbotId: collectionId,
-      conversationId: v4(),
+      collection_id: collectionId,
+      conversation_id: v4(),
       message: message
     });
   } catch (error) {
@@ -197,8 +232,8 @@ async function run() {
   console.log(`message: ${message}`);
   try {
     response = await instance.post('/chat', {
-      chatbotId: collectionId,
-      conversationId: v4(),
+      collection_id: collectionId,
+      conversation_id: v4(),
       message: message
     });
   } catch (error) {
