@@ -168,6 +168,11 @@ async function run() {
             answer:
               'MyScale Chat is a chatbot that can answer questions about documents ' +
               'or websites and provide information about data.'
+          },
+          {
+            type: 'QA_PAIR',
+            question: '比熊犬多久体检一次',
+            answer: '比熊犬每年体检一次'
           }
         ]
       },
@@ -192,6 +197,23 @@ async function run() {
       collection_id: collectionId,
       conversation_id: v4(),
       message: message
+    });
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  console.log(response.data);
+
+  // Chat with Collection with Extra data
+  console.log('=== Chat with Collection for QA with extra data ===');
+  message = '王二狗多久体检一次?';
+  console.log(`message: ${message}`);
+  try {
+    response = await instance.post('/chat', {
+      collection_id: collectionId,
+      conversation_id: v4(),
+      message,
+      extra_info: extraInfo
     });
   } catch (error) {
     console.error(error);
