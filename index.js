@@ -149,6 +149,23 @@ async function run() {
   }
   console.log(response.data);
 
+  // Get Chat History
+  console.log('=== Get Chat History ===');
+  let history;
+  try {
+    history = await instance.get(`/chat/${collectionId}/history`, {
+      params: {
+        offset: 0,
+        limit: 10,
+        desc: true
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  console.log(history.data);
+
   // Add Sources to Collection
   console.log('=== Add Sources to Collection === ');
   let collectionC;
